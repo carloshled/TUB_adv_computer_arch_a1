@@ -10,18 +10,21 @@ double	result[N_SAMPLES];
 void smooth(double sample[], double coeff[], double result[], int n)
 {
 	int i, j;
+	int ct = 2;
 	double norm=0.0;
-
-	for (i=0; i<N_COEFFS; i++)
-		norm+= coeff[i]>0 ? coeff[i] : -coeff[i];
 
 	for (i=0; i<n; i++){
 		if (i==0 || i==n-1){
 			result[i] = sample[i];
 		}else{
 			result[i]=0.0;
-			for (j=0; j<N_COEFFS; j++)
+			for (j=0; j<N_COEFFS; j++){
+				if (i<ct){
+					norm+= coeff[j]>0 ? coeff[j] : -coeff[j];
+					//printf("norm [%d] = %f\n", j, norm);
+				}
 				result[i] += sample[i-1+j]*coeff[j];
+			}
 			result[i]/=norm;
 		}
 	}
