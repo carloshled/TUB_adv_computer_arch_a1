@@ -26,12 +26,10 @@ norm:		.double 0.0
 	ld r4,N_COEFFS(r0)  ; r4 = N_COEFFS
 
 	; if (N_SAMPLES>=N_COEFFS)
-	slt r8, r3, r4 		; if N_COEFFS < N_SAMPLES
+	slt r8, r4, r3 		; if N_COEFFS < N_SAMPLES
 	beq r8, r0, smooth 	; jump to sooth
 
-	ld r4,N_COEFFS(r0) 	; print N_COEFFS to test 
-	sd r4,N_COEFFS(r0)
-	sd r4,(r2)
+	sd r4,(r2)			; print N_COEFFS to test 
 	sd r10,(r1)
 
 	; for (i=0; i<N_SAMPLES; i++)
@@ -39,19 +37,18 @@ norm:		.double 0.0
 for:
 	slt r8, r5, r3 		; if i > N_SAMPLES
 	beq r8, r0, endfor 	; jump to endfor
-	ld r5,i(r0)			; print i
-	sd r5,i(r0)
-	sd r5,(r2)
-	sd r10,(r1)
-	daddui r5, r5, 1		; i++
+
+	sd r5,(r2)			; print i
+	sd r10,(r1)			; still print
+
+	daddui r5, r5, 1	; i++
+	
 	j for
 
 endfor: 
 	j end
 
 smooth: ; smooth method, I test it with writing N_SAMPLES to terminal
-	ld r3,N_SAMPLES(r0)
-	sd r3,N_SAMPLES(r0)
 	sd r3,(r2)
 	sd r10,(r1)
 
