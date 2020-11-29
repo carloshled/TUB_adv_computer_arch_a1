@@ -10,7 +10,7 @@ N_COEFFS:	.word 3
 ;sample:		.double 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 ;coeff:		.double -1, 2, 3
 
-sample:		.double 1, 2, 1, 2, 1, 1, 2, 1, 2, 4
+sample:		.double 1, 2, 1, 2, 1, 1, 2, 1, 2, 1
 coeff:		.double -0.5, 1, 0.5
 result:		.double 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0
 
@@ -50,7 +50,8 @@ norm:		.double 2.0
 		
 		dsll  $a0, $a0, 3		;number of samples * 8 (address size)
 		daddu $t1, $a0, $a1		;samples[N_SAMPLES]
-		;daddi $a1, $a1, -8		;samples[N_SAMPLES-1]
+		
+		daddi $t1, $t1, -16		;samples[N_SAMPLES-2] not taking into account first and last number
 		
 		l.d   f0, ($a1)			;first value of sample
 		s.d   f0, ($a3)			;first result value
@@ -77,13 +78,11 @@ for_loop:
 		
 		daddi $a1, $a1, 8		;samples ++
 		daddi $a3, $a3, 8		;results ++
-		
 		s.d   f31, ($a3)		;stores float value f31 (result) in address mem a3
+			
+		bne $a1, $t1, for_loop  ;if (samples != last sample)
 		
-		
-		bne $a1, $t1, for_loop  ;if (samples != last sample-1)
-		
-		;s.d f13,-8($a1)
+		s.d f13,8($a3)
 		
 end:
 		halt
