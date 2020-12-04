@@ -1,3 +1,7 @@
+; Paola Cecilia Torrico Morón 453031
+; Beata Tompos 455674
+; Alberto Carlos Hernandez Ledesma 452984
+
 .data
 
 ; global variables
@@ -7,7 +11,6 @@ N_COEFFS:	.word 3
 sample:		.double 1, 2, 1, 2, 1, 1, 2, 1, 2, 1
 coeff:		.double -0.5, 1, 0.5
 result:		.double 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0
-
 extra:		.double 2.0
 
 .text
@@ -43,10 +46,6 @@ extra:		.double 2.0
 		l.d   f1, ($a2)			;load value of float coef	
 		l.d   f2, 8($a2)
 		l.d   f3, 16($a2)
-
-		;div.d f1, f1, f7		;divide by norm
-		;div.d f2, f2, f7		;divide by norm
-		;div.d f3, f3, f7		;divide by norm
 		
 		dsll  $a0, $a0, 3		;number of samples * 8 (address size)
 		daddu $t1, $a0, $a1		;samples[N_SAMPLES]
