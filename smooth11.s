@@ -5,20 +5,11 @@
 .data
 
 ; global variables
-N_SAMPLES:	.word 10
-N_COEFFS:	.word 3
-
-sample:		.double 1, 2, 1, 3, 5, 4, 1, 2, 3, 4
-coeff:		.double -0.5, 1, 0.5
-result:		.double 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0
-
-; Basic Correctness
-;coeff:     .double 0.5, 1.0, 0.5
-;N_SAMPLES: .word 5
-;sample:    .double 1.0, 10.0, -5.0, 3.0, -1.0
-;result:    .double 0.0, 0.0, 0.0, 0.0, 0.0
-
-extra:		.double 2.0
+coeff:     .double -0.5, 1.0, 0.5
+N_SAMPLES: .word 10
+;sample:    .double 1, 2, 1, 3, 5, 4, 1, 2, 3, 4
+sample:    .double 1, 2, 1, 2, 1, 1, 2, 1, 2, 1
+result:    .double 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 
 .text
 		ld    $a0, N_SAMPLES($0)
@@ -150,9 +141,14 @@ end_loop:
 		s.d f13,8($a3)			;stores the last value of sample in result
 		s.d f31, ($a3)			;stores the last value of the loop computation
 end:
+
 		halt
 		
 last: 
 		s.d f15,8($a3)			;stores the last value of sample in result
 		s.d f31, ($a3)			;stores the last value of the loop computation
+		
+		daddi $a3, $0, result	;loads address of result vector
+
 		halt
+		
